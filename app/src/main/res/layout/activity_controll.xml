@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/search_btn"
+        style="@style/Base.TextAppearance.AppCompat.SearchResult.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_selector"
+        android:text="@string/search"
+        app:layout_constraintBottom_toBottomOf="@id/search_input"
+        app:layout_constraintLeft_toRightOf="@+id/search_input"></Button>
+
+    <EditText
+        android:id="@+id/search_input"
+        android:layout_width="230dp"
+        android:layout_height="0dp"
+        android:focusableInTouchMode="true"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:textSize="12sp"
+        app:layout_constrainedHeight="false"
+        app:layout_constraintBottom_toTopOf="@+id/video_listview"
+        app:layout_constraintEnd_toStartOf="@+id/search_btn"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        app:layout_constraintVertical_weight="0.1"
+        tools:targetApi="o" />
+
+    <ListView
+        android:id="@+id/video_listview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_input"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        app:layout_constraintVertical_weight="0.8" />
+
+
+
+</android.support.constraint.ConstraintLayout>

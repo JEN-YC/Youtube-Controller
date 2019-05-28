@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item  android:title="@string/all_song">
+            <menu>
+                <item
+                    android:id="@+id/chinese_song"
+                    android:title="@string/chinese_song"/>
+                <item
+                    android:id="@+id/english_song"
+                    android:title="@string/english_song"/>
+            </menu>
+        </item>
+        <item android:title="@string/rank">
+            <menu>
+                <item
+                    android:id="@+id/chinese_rank"
+                    android:title="@string/chinese_rank"/>
+                <item
+                    android:id="@+id/english_rank"
+                    android:title="@string/english_rank"/>
+                <item
+                    android:id="@+id/chinese_new"
+                    android:title="@string/chinese_new"/>
+                <item
+                    android:id="@+id/english_new"
+                    android:title="@string/english_new"/>
+            </menu>
+        </item>
+        <item android:title="@string/personal_info">
+            <menu>
+                <item
+                    android:id="@+id/favorite"
+                    android:title="@string/favorite"/>
+            </menu>
+        </item>
+    </group>
+
+
+
+</menu>

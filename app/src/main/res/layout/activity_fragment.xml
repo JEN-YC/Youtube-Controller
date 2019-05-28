@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/layout_round"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/curr_volume"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.07"
+        android:gravity="center"
+        android:text="目前音量：" />
+
+    <SeekBar
+        android:id="@+id/volume_setting"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.13"
+        app:layout_constraintBottom_toTopOf="@+id/next"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="0.3" />
+
+    <LinearLayout
+        android:id="@+id/controll_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:orientation="horizontal"
+        android:weightSum="0.9">
+
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/pause"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="0.3"
+            android:background="@drawable/roundbutton"
+            app:layout_constraintBottom_toTopOf="@+id/fullscreen"
+            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/play"
+            app:layout_constraintTop_toBottomOf="@id/volume_setting"
+            app:layout_constraintVertical_weight="0.3"
+            app:srcCompat="@android:drawable/ic_media_pause" />
+
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/play"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="0.3"
+            android:background="@drawable/roundbutton"
+            app:layout_constraintBottom_toTopOf="@+id/fullscreen"
+            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintLeft_toRightOf="@+id/pause"
+            app:layout_constraintRight_toLeftOf="@+id/next"
+            app:layout_constraintVertical_weight="0.3"
+            app:srcCompat="@android:drawable/ic_media_play" />
+
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/next"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="0.3"
+            android:background="@drawable/roundbutton"
+            app:layout_constraintBottom_toTopOf="@+id/fullscreen"
+            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintLeft_toRightOf="@+id/play"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintVertical_weight="0.3"
+            app:srcCompat="@android:drawable/ic_media_next" />
+    </LinearLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        app:layout_constraintEnd_toStartOf="@+id/fullscreen"
+        app:layout_constraintStart_toStartOf="@+id/fullscreen">
+
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/replay"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/roundbutton"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.15"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/fullscreen"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:srcCompat="@drawable/replay" />
+
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/fullscreen"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/roundbutton"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.15"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintLeft_toRightOf="@+id/replay"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:srcCompat="@drawable/fullscreen" />
+    </android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.4"
+        android:background="@drawable/layout_round2"
+        android:orientation="horizontal"></LinearLayout>
+
+</LinearLayout>
