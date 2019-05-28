@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -97,74 +98,100 @@ public class mfragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                int progress = seekBar.getProgress();
-                Map<String, String> map = new HashMap<>();
-                map.put("command", VOLUME);
-                map.put("value", String.valueOf(progress));
-                JSONObject json = new JSONObject(map);
-                String jsonString = json.toString();
-                Connected_page.writeClass.write_msg(jsonString.getBytes());
+                try {
+                    int progress = seekBar.getProgress();
+                    Map<String, String> map = new HashMap<>();
+                    map.put("command", VOLUME);
+                    map.put("value", String.valueOf(progress));
+                    JSONObject json = new JSONObject(map);
+                    String jsonString = json.toString();
+                    Connected_page.writeClass.write_msg(jsonString.getBytes());
+                }
+                catch (NullPointerException e){
+                    Toast.makeText(getActivity(), "已與投影機斷線，請回主頁重新連線", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         replay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map<String, String> map = new HashMap<>();
-                map.put("command", REPLAY);
-                JSONObject json = new JSONObject(map);
-                String jsonString = json.toString();
-                Connected_page.writeClass.write_msg(jsonString.getBytes());
+                try {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("command", REPLAY);
+                    JSONObject json = new JSONObject(map);
+                    String jsonString = json.toString();
+                    Connected_page.writeClass.write_msg(jsonString.getBytes());
+                }
+                catch (NullPointerException e){
+                    Toast.makeText(getActivity(), "已與投影機斷線，請回主頁重新連線", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map<String, String> map = new HashMap<>();
-                map.put("command", STOP);
-                JSONObject json = new JSONObject(map);
-                String jsonString = json.toString();
-                Connected_page.writeClass.write_msg(jsonString.getBytes());
+                try {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("command", STOP);
+                    JSONObject json = new JSONObject(map);
+                    String jsonString = json.toString();
+                    Connected_page.writeClass.write_msg(jsonString.getBytes());
+                }
+                catch (NullPointerException e){
+                    Toast.makeText(getActivity(), "已與投影機斷線，請回主頁重新連線", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map<String, String> map = new HashMap<>();
-                map.put("command", NEXT);
-                JSONObject json = new JSONObject(map);
-                String jsonString = json.toString();
-                Connected_page.writeClass.write_msg(jsonString.getBytes());
+                try {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("command", NEXT);
+                    JSONObject json = new JSONObject(map);
+                    String jsonString = json.toString();
+                    Connected_page.writeClass.write_msg(jsonString.getBytes());
+                }catch (NullPointerException e){
+                    Toast.makeText(getActivity(), "已與投影機斷線，請回主頁重新連線", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map<String, String> map = new HashMap<>();
-                map.put("command", PLAY);
-                JSONObject json = new JSONObject(map);
-                String jsonString = json.toString();
-                Connected_page.writeClass.write_msg(jsonString.getBytes());
+                try {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("command", PLAY);
+                    JSONObject json = new JSONObject(map);
+                    String jsonString = json.toString();
+                    Connected_page.writeClass.write_msg(jsonString.getBytes());
+                }catch (NullPointerException e){
+                    Toast.makeText(getActivity(), "已與投影機斷線，請回主頁重新連線", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         fullscreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map<String, String> map = new HashMap<>();
-                map.put("command", FULLSCREEN);
-                JSONObject json = new JSONObject(map);
-                String jsonString = json.toString();
-                Connected_page.writeClass.write_msg(jsonString.getBytes());
-                if (isFullScreen){
-                    isFullScreen = false;
-                    fullscreen.setImageResource(R.drawable.fullscreen);
-                }
-                else{
-                    isFullScreen = true;
-                    fullscreen.setImageResource(R.drawable.exit_fullscreen);
+                try {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("command", FULLSCREEN);
+                    JSONObject json = new JSONObject(map);
+                    String jsonString = json.toString();
+                    Connected_page.writeClass.write_msg(jsonString.getBytes());
+                    if (isFullScreen) {
+                        isFullScreen = false;
+                        fullscreen.setImageResource(R.drawable.fullscreen);
+                    } else {
+                        isFullScreen = true;
+                        fullscreen.setImageResource(R.drawable.exit_fullscreen);
+                    }
+                }catch (NullPointerException e){
+                    Toast.makeText(getActivity(), "已與投影機斷線，請回主頁重新連線", Toast.LENGTH_SHORT).show();
                 }
             }
         });

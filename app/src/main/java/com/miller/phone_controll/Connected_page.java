@@ -1,28 +1,31 @@
 package com.miller.phone_controll;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.SearchView;
-import android.util.Log;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -51,6 +54,7 @@ public class Connected_page extends AppCompatActivity
     YoutubeAPI youtubeAPI;
     Handler handler;
     YoutubeAdapter searchAdapter;
+    private static Toast toast;
     public static FavoriteAdapter favoriteAdapter;
     TextView curr_video_list;
     public static List<VideoPojo> favorite_list;
@@ -59,13 +63,37 @@ public class Connected_page extends AppCompatActivity
 
     static final String CHINESE_SONG = "PLDAAE8FCD772FB4BA";
     static final String ENGLISH_SONG = "PLA5F0EC50C3B8D29B";
-    static final String CHINESE_RANK = "RDgrZxqpwtNYI";
+    static final String CHINESE_RANK = "PLsyOSbh5bs15OXJIigNdRgK0za-JXwhz1";
     static final String ENGLISH_RANK = "PLx0sYbCqOb8TBPRdmBHs5Iftvv9TPboYG";
     static final String CHINESE_NEW = "PLsyOSbh5bs16vubvKePAQ1x3PhKavfBIl";
     static final String ENGLISH_NEW = "PLw-VjHDlEOgtCjYJB1r1EkZ-AKlYv6Ozj";
     final mfragment fragment = new mfragment();
     public static Favorite_Database favorite_database;
     Boolean isfragment = false;
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try{
+            if (writeClass != null){
+                writeClass = null;
+            }
+            if(serverClass != null){
+                makeTextAndShow(getApplicationContext(), "關閉server", 1000);
+                serverClass.socket.close();
+                serverClass = null;
+            }
+            if(clientClass != null){
+                makeTextAndShow(getApplicationContext(), "關閉client", 1000);
+                clientClass.socket.close();
+                clientClass = null;
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +114,16 @@ public class Connected_page extends AppCompatActivity
         curr_video_list = findViewById(R.id.curr_video);
     }
 
+    private static void makeTextAndShow(final Context context, final String text, final int duration) {
+        if (toast == null) {
+            //如果還沒有用過makeText方法，才使用
+            toast = android.widget.Toast.makeText(context, text, duration);
+        } else {
+            toast.setText(text);
+            toast.setDuration(duration);
+        }
+        toast.show();
+    }
     private void processControllers() {
         searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -101,15 +139,19 @@ public class Connected_page extends AppCompatActivity
                 builder.setPositiveButton("確定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Map<String, String> map = new HashMap<>();
-                        map.put("ID", video_id);
-                        map.put("Title", name);
-                        map.put("URL", URL);
-                        map.put("description", description);
-                        map.put("command", ORDER);
-                        JSONObject json = new JSONObject(map);
-                        String jsonString = json.toString();
-                        writeClass.write_msg(jsonString.getBytes());
+                        try {
+                            Map<String, String> map = new HashMap<>();
+                            map.put("ID", video_id);
+                            map.put("Title", name);
+                            map.put("URL", URL);
+                            map.put("description", description);
+                            map.put("command", ORDER);
+                            JSONObject json = new JSONObject(map);
+                            String jsonString = json.toString();
+                            writeClass.write_msg(jsonString.getBytes());
+                        }catch (NullPointerException e){
+                            makeTextAndShow(getApplicationContext(), "已與投影機斷線，請回主頁重新連線", Toast.LENGTH_SHORT);
+                        }
                     }
                 });
                 builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -170,6 +212,9 @@ public class Connected_page extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            Intent intent = new Intent(Connected_page.this, MainActivity.class);
+            startActivity(intent);
+            Connected_page.this.finish();
             super.onBackPressed();
         }
     }
@@ -328,15 +373,18 @@ public class Connected_page extends AppCompatActivity
                 }
             }.start();
         } else if (id == R.id.favorite) {
-            favorite_list = favorite_database.getAll();
+            searchResults = favorite_database.getAll();
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    if (favorite_list.size() > 0) {
+                    if (searchResults.size() > 0) {
                         hideFragment(fragment);
-                        favoriteAdapter = new FavoriteAdapter(Connected_page.this, favorite_list);
+                        favoriteAdapter = new FavoriteAdapter(Connected_page.this, searchResults);
                         searchListView.setAdapter(favoriteAdapter);
                         curr_video_list.setText(R.string.favorite);
+                    }
+                    else{
+                        makeTextAndShow(getApplicationContext(), "我的最愛目前沒有歌曲喔", Toast.LENGTH_SHORT);
                     }
                 }
             });
@@ -372,13 +420,13 @@ public class Connected_page extends AppCompatActivity
         MainActivity.mManager.removeGroup(MainActivity.mChannel, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
+                makeTextAndShow(getApplicationContext(), "已斷開連線", Toast.LENGTH_SHORT);
             }
 
             @Override
             public void onFailure(int reason) {
             }
         });
-
     }
 
     public class WriteClass extends Thread {

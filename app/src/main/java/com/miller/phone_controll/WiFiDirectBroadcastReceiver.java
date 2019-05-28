@@ -12,7 +12,17 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
     private WifiP2pManager mManager;
     private WifiP2pManager.Channel mChannel;
     private MainActivity mActivity;
-
+    private static Toast toast;
+    private static void makeTextAndShow(final Context context, final String text, final int duration) {
+        if (toast == null) {
+            //如果還沒有用過makeText方法，才使用
+            toast = android.widget.Toast.makeText(context, text, duration);
+        } else {
+            toast.setText(text);
+            toast.setDuration(duration);
+        }
+        toast.show();
+    }
     public WiFiDirectBroadcastReceiver(WifiP2pManager mManager, WifiP2pManager.Channel mChannel, MainActivity mActivity){
         this.mManager = mManager;
         this.mChannel = mChannel;
@@ -38,11 +48,11 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
 
             if(networkInfo.isConnected()){
                 mManager.requestConnectionInfo(mChannel, mActivity.connectionInfoListener);
-                Toast.makeText(context, "連線成功", Toast.LENGTH_SHORT).show();
+                makeTextAndShow(context, "連線成功", Toast.LENGTH_SHORT);
             }
             else{
                 mActivity.status.setText("連線中斷");
-                Toast.makeText(context, "連線中斷", Toast.LENGTH_SHORT).show();
+                makeTextAndShow(context, "連線中斷", Toast.LENGTH_SHORT);
             }
         }
         else if(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)){

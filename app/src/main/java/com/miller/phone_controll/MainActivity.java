@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     TextView status;
     List<WifiP2pDevice> peers = new ArrayList<>();
     ListView peerListview;
+    private static Toast toast;
     String[] device_names;
     final int PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 1;
 
@@ -55,7 +56,16 @@ public class MainActivity extends AppCompatActivity {
         processViews();
         processControllers();
     }
-
+    private static void makeTextAndShow(final Context context, final String text, final int duration) {
+        if (toast == null) {
+            //如果還沒有用過makeText方法，才使用
+            toast = android.widget.Toast.makeText(context, text, duration);
+        } else {
+            toast.setText(text);
+            toast.setDuration(duration);
+        }
+        toast.show();
+    }
     private void processViews(){
         OnOffbtn = findViewById(R.id.onOff);
         discover = findViewById(R.id.discover);
@@ -148,12 +158,12 @@ public class MainActivity extends AppCompatActivity {
                 mManager.connect(mChannel, config, new WifiP2pManager.ActionListener() {
                     @Override
                     public void onSuccess() {
-                        Toast.makeText(getApplicationContext(), "正在連接至投影機卡拉OK",Toast.LENGTH_SHORT).show();
+                        makeTextAndShow(getApplicationContext(), "正在連接至投影機卡拉OK",Toast.LENGTH_LONG);
                     }
 
                     @Override
                     public void onFailure(int reason) {
-                        Toast.makeText(getApplicationContext(), "連接失敗，請再試一次",Toast.LENGTH_SHORT).show();
+                        makeTextAndShow(getApplicationContext(), "連接失敗，請再試一次",Toast.LENGTH_SHORT);
                     }
                 });
             }
@@ -178,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if(peers.size() == 0){
-                Toast.makeText(getApplicationContext(), "沒有搜尋到任何可連線裝置",Toast.LENGTH_SHORT).show();
+                makeTextAndShow(getApplicationContext(), "沒有搜尋到任何可連線裝置",Toast.LENGTH_SHORT);
             }
         }
     };
@@ -190,11 +200,13 @@ public class MainActivity extends AppCompatActivity {
                 isHost = true;
                 Intent intent = new Intent(getApplicationContext(), Connected_page.class);
                 startActivity(intent);
+                MainActivity.this.finish();
             }
             else if(info.groupFormed && !info.isGroupOwner){
                 isHost = false;
                 Intent intent = new Intent(getApplicationContext(), Connected_page.class);
                 startActivity(intent);
+                MainActivity.this.finish();
             }
         }
     };
